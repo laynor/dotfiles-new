@@ -1,0 +1,39 @@
+# -*- conf -*-
+[user]
+	name = Alessandro Piras
+	email = laynor@gmail.com
+[core]
+	editor = vim
+	preloadIndex = true
+	autocrlf = input
+	excludesfile = /home/ale/.gitignore_global
+        # excludesfile = /home/mattia/.gitignore_global
+        # sparsecheckout = true
+[color]
+	ui = auto
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+	unstage = reset HEAD
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	dw = "!f() { length=$(($#-1)); for last; do true; done; git diff ${@:3:$length} `find . -name $1` $last; }; f"
+[merge]
+	conflictstyle = diff3
+[receive]
+	# The receive.denyNonFastforwards flag makes sure that merges can't
+	# happen when you push to the repo. You have to do the merges on your
+	# local machine, and then push the result.
+	# denyNonFastForwards = true
+	# [branch]
+	# 	autosetupmerge = true
+[github]
+	user = laynor
+	oauth-token = 9310c180cfea90614449ca49265da560d2611f32
+[push]
+	default = simple

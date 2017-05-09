@@ -1,0 +1,78 @@
+;;;; -*- mode: lisp -*-
+(in-package :stumpwm-user)
+
+(load-module "battery")
+(load-module "window-tags")
+(load-module "battery-portable")
+(ql:quickload "swank")
+(swank-loader:init)
+
+(defun start-swank ()
+  (setf *top-level-error-action* :break)
+  (swank:create-server :port 6000
+                      :style swank:*communication-style*
+                      :dont-close t)
+  (echo-string (current-screen) "Starting swank."))
+
+(defcommand swank () ()
+  (start-swank))
+
+;;; Top bindings
+(set-prefix-key (kbd "s-;"))
+(define-key *top-map* (kbd "s-j") "windowlist")
+(define-key *top-map* (kbd "s-u") "pull-hidden-previous")
+(define-key *top-map* (kbd "s-o") "pull-hidden-next")
+(define-key *top-map* (kbd "s-x") "colon")
+(define-key *top-map* (kbd "s-:") "eval")
+(define-key *top-map* (kbd "s-TAB") "fnext")
+(define-key *top-map* (kbd "s-ISO_Left_Tab") "fprev")
+(define-key *top-map* (kbd "s-.") "gnext")
+(define-key *top-map* (kbd "s-,") "gprev")
+(define-key *top-map* (kbd "s-Right") "move-window right")
+(define-key *top-map* (kbd "s-Left") "move-window left")
+(define-key *top-map* (kbd "s-Down") "move-window down")
+(define-key *top-map* (kbd "s-Up") "move-window up")
+
+;;; Prefix map bindings
+(define-key *root-map* (kbd "s-;") "pull-hidden-other")
+(define-key *root-map* (kbd "s-s") "swank")
+
+;; (define-key *top-map* (kbd "s-t") "mark")
+;; (define-key *top-map* (kbd "s-c") "delete")
+
+;;; Dialog appearance
+(set-font "-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-15")
+(set-fg-color "SlateBlue2")
+(set-border-color "DarkOrchid2")
+(set-msg-border-width 1)
+
+;;; Modeline
+(setf stumpwm:*screen-mode-line-format*
+      (list "[%B] %W"))
+
+;;; Hacking
+
+(defun find-xwin-tree (pred windows)
+  (cond
+    ((null windows)
+     nil)
+    ((funcall pred (car windows))
+     (car windows))
+    (t (find-xwin-tree pred
+	(append (xlib:query-tree (car windows)) (cdr windows))))))
+
+(defun find-xwin (pred)
+  (find-xwin-tree pred (xlib:query-tree (stumpwm::screen-root (stumpwm:current-screen)))))
+
+(defun find-xwin-by-id (id)
+  (find-xwin #'(lambda (win) (= (xlib:window-id win) id))))
+
+(defun find-xwin-by-class (&key class instance)
+  (assert (or class instance))
+  (find-xwin #'(lambda (win)
+		 (multiple-value-bind (i c)
+		     (xlib:get-wm-class win)
+		   (or (and instance i
+			    (string= instance i))
+		       (and class c
+			    (string= class c)))))))

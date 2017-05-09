@@ -1,0 +1,14 @@
+"hg6902
+
+loadplugins '\.(js|penta)$'
+group user
+highlight Hint font: bold 10px "Droid Sans Mono", monospace !important; margin: -.2ex; padding: 0 0 0 1px; outline: 1px solid rgba(0, 0, 0, .5); background: rgba(255, 248, 231, .8); color: black; font-size: 11pt !important;
+map -count -modes=v y <count><C-v><C-c><Esc>
+set hintkeys=asdfjkl;
+set passkeys=github.com:<Return>
+set go+=B
+
+map <C-n> <C-Tab>
+map <C-p> <S-C-Tab>
+
+" vim: set ft=pentadactyl:

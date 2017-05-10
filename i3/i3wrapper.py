@@ -4,23 +4,29 @@ import pystache
 import sys
 import configparser
 
-HOME = os.getenv("HOME")
+HOME         = os.getenv("HOME")
+I3_DIR       = os.path.join(HOME, '.i3')
+TEMPLATE_DIR = os.path.join(I3_DIR, 'config.d')
+INI_FILE     = os.path.join(I3_DIR, 'config.ini')
+CONFIG_FILE  = os.path.join(I3_DIR, 'config')
+
+def getIniVariables():
+    conf = configparser.ConfigParser()
+    conf.read(INI_FILE)
+    font = conf.get('appearance', 'font')
+    return { 'font': font }
+
+def writeOutputFile(rendered):
+    with open(CONFIG_FILE, 'w+') as of:
+        print(rendered, file=of)
+
 
 def updateConfig():
-    conf = configparser.ConfigParser()
-    conf.read(os.path.join(HOME, '.i3/config.ini'))
-    font = conf.get('appearance', 'font')
-    templateName = os.path.join(HOME,".i3/config.mustache" )
-    outputName = os.path.join(HOME, ".i3/config")
-
     renderer = pystache.Renderer()
+    renderer.search_dirs = [TEMPLATE_DIR]
+    rendered = renderer.render('{{> config}}', getIniVariables())
 
-    with open(templateName, 'r') as tf:
-        with open(outputName, 'w+') as of:
-            template = tf.read()
-            parsed = pystache.parse(template)
-            rendered = renderer.render(template, {'font': font})
-            print(rendered, file=of)
+    writeOutputFile(rendered)
 
 
 if __name__ == '__main__':

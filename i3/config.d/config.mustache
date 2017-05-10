@@ -1,3 +1,4 @@
+# -*- mode: conf -*-
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
@@ -20,21 +21,7 @@
 
 {{> keys}}
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-  status_command i3status | ~/.i3/net-speed.sh
-	tray_output primary
-  colors {
-    separator #586e75
-    background #002b36
-    statusline #aea79f
-    focused_workspace #586e75 #586e75 #ffffff
-    active_workspace #073642 #073642 #ffffff
-    inactive_workspace #002b36 #002b36 #aea79f
-    urgent_workspace #77216f #77216f #ffffff
-  }
-}
+{{> bar}}
 
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a
@@ -47,7 +34,3 @@ bar {
 #######################################################################
 # exec i3-config-wizard
 
-client.focused #586e75 #586e75 #fdf6e3 #268bd2
-client.focused_inactive #073642 #073642 #93a1a1 #002b36
-client.unfocused #002b36 #002b36 #586e75 #002b36
-client.urgent #dc322f #dc322f #fdf6e3 #dc322f

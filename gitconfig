@@ -32,8 +32,5 @@
 	# denyNonFastForwards = true
 	# [branch]
 	# 	autosetupmerge = true
-[github]
-	user = laynor
-	oauth-token = 9310c180cfea90614449ca49265da560d2611f32
 [push]
 	default = simple

@@ -55,10 +55,12 @@ bindsym $mod+w exec rofi -show window -fg "#f1f1f1" -bg "#333333" -hlfg "#ffffff
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
+# bindsym $mod+$left focus left
+set $move ~/.i3/move-cursor-window-center.sh
+bindsym $mod+$left exec "$move focus left"
+bindsym $mod+$down exec "$move focus down"
+bindsym $mod+$up exec "$move focus up"
+bindsym $mod+$right exec "$move focus right"
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left

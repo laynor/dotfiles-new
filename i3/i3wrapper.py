@@ -27,5 +27,7 @@ if __name__ == '__main__':
     updateConfig()
     if len(sys.argv) == 1:
         os.system('i3')
-    if sys.argv[1] == 'reload':
+    elif sys.argv[1] == 'reload':
         os.system('i3-msg reload')
+    elif sys.argv[1] == 'restart':
+        os.system('i3-msg restart')

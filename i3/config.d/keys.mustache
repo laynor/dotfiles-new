@@ -6,6 +6,8 @@ set $down j
 set $left h
 set $right l
 set $mod Mod4
+set $i3dir ~/.i3
+set $scripts $i3dir/scripts
 
 # use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -20,11 +22,12 @@ bindsym $mod+w exec rofi -show window
 
 # change focus
 # bindsym $mod+$left focus left
-set $move ~/.i3/move-cursor-window-center.sh
-bindsym $mod+$left exec "$move focus left"
-bindsym $mod+$down exec "$move focus down"
-bindsym $mod+$up exec "$move focus up"
-bindsym $mod+$right exec "$move focus right"
+set $move exec ~/.i3/scripts/sync-cursor.sh
+
+bindsym $mod+$left  $move focus left
+bindsym $mod+$down  $move focus down
+bindsym $mod+$up    $move focus up
+bindsym $mod+$right $move focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -104,10 +107,10 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # reload the configuration file
-bindsym $mod+Shift+c exec "python3 ~/.i3/i3wrapper.py reload"
+bindsym $mod+Shift+c exec "python3 $i3dir/i3wrapper.py reload"
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # bindsym $mod+Shift+r restart
-bindsym $mod+Shift+p exec "python3 ~/.i3/i3wrapper.py restart"
+bindsym $mod+Shift+p exec "python3 $i3dir/i3wrapper.py restart"
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1"
 bindsym $mod+semicolon exec "i3lock"
@@ -137,3 +140,5 @@ mode "resize" {
 }
 
 bindsym $mod+Shift+r mode "resize"
+
+bindsym $mod+F1 exec "$scripts/display-window-class.sh"

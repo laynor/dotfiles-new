@@ -1,6 +1,7 @@
 from i3pystatus import Status
 import os
 
+HOSTNAME=os.getenv('HOSTNAME')
 status = Status()
 
 # Displays clock like this:
@@ -22,23 +23,30 @@ def run(command):
 
 # This would look like this:
 # Discharging 6h:51m
-status.register("battery",
-                format="{status} {remaining:%E%hh:%Mm}",
-                alert=True,
-                full_color=BLACK,
-                charging_color=MIDGREEN,
-                alert_percentage=10,
-                status={
-                    "DIS":  "🔋",
-                    "CHR":  "🔌🔋",
-                    "FULL": "🔌",
-                },)
+if HOSTNAME == 'pignegna':
+    status.register("battery",
+                    format="{status} {remaining:%E%hh:%Mm}",
+                    alert=True,
+                    full_color=BLACK,
+                    charging_color=MIDGREEN,
+                    alert_percentage=10,
+                    status={
+                        "DIS":  "🔋",
+                        "CHR":  "🔌🔋",
+                        "FULL": "🔌",
+                    },)
 
 # Note: requires both netifaces and basiciw (for essid and quality)
-status.register("network",
-                color_up=MIDGREEN,
-                interface="wlp3s0",
-                format_up=u"\uf1eb {essid} {quality:03.0f}%",)
+if HOSTNAME=='pignegna':
+    status.register("network",
+                    color_up=MIDGREEN,
+                    interface="wlp3s0",
+                    format_up=u"\uf1eb {essid} {quality:03.0f}%",)
+else:
+    status.register("network",
+                    color_up=MIDGREEN,
+                    interface='enp2s0',
+                    format_up='{kbs}')
 
 # Displays whether a DHCP client is running
 status.register("runwatch",
@@ -58,15 +66,16 @@ status.register("temp",
 status.register("mem_bar",
                 color=MIDGREEN)
 
-status.register("disk",
-                path="/mnt/Mufu",
-                on_leftclick=run("dolphin /"),
-                format=u"\uf0a0 {avail}G")
+if HOSTNAME == 'pignegna':
+    status.register("disk",
+                    path="/mnt/Mufu",
+                    on_leftclick=run("dolphin /"),
+                    format=u"\uf0a0 {avail}G")
 
-status.register("disk",
-                path="/home",
-                on_leftclick=run("dolphin $HOME"),
-                format=u"\uf015 {avail}G",)
+    status.register("disk",
+                    path="/home",
+                    on_leftclick=run("dolphin $HOME"),
+                    format=u"\uf015 {avail}G",)
 
 # Shows disk usage of /
 # Format:
@@ -127,4 +136,3 @@ status.run()
 # status.register("network",
 #     interface="eth0",
 #     format_up="{v4cidr}",)
-

@@ -1,7 +1,7 @@
 from i3pystatus import Status
-import os
+import socket
 
-HOSTNAME=os.getenv('HOSTNAME')
+HOSTNAME=socket.gethostname()
 status = Status()
 
 # Displays clock like this:

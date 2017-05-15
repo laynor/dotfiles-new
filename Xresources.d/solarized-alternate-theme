@@ -2,7 +2,7 @@
 ! ROFI Color theme
 ! ------------------------------------------------------------------------------
 rofi.color-enabled: true
-rofi.color-window: #c0002b37, #002b37, #c0003642
-rofi.color-normal: #c0002b37, #c0819396, #003643, #c0008ed4, #ffffff
-rofi.color-active: #c0002b37, #c0008ed4, #003643, #c0008ed4, #66c6ff
-rofi.color-urgent: #c0002b37, #c0da4281, #003643, #c0008ed4, #890661
+rofi.color-window: #d0002b37, #002b37, #c0003642
+rofi.color-normal: #d0002b37, #d0819396, #d0003643, #d0008ed4, #ffffff
+rofi.color-active: #d0002b37, #d0008ed4, #d0003643, #d0008ed4, #66c6ff
+rofi.color-urgent: #d0002b37, #d0da4281, #d0003643, #d0008ed4, #890661

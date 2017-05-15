@@ -4,7 +4,8 @@
 bar {
   # status_command i3status -c ~/.i3/i3status.conf | ~/.i3/net-speed.sh
   status_command python3 ~/.i3/i3pystatusconf.py
-	tray_output primary
+  tray_output primary
+  strip_workspace_numbers yes
   colors {
     separator #586e75
     background #002b36

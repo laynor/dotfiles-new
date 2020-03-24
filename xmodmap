@@ -1,0 +1,18 @@
+clear control
+clear mod1
+clear lock
+clear mod3
+clear mod4
+keycode 66 = Alt_L Meta_L
+keycode 65 = Hyper_L
+keycode 64 = Control_L
+keycode 37 = Caps_Lock
+keycode 101 = Super_L
+keycode 100 = Control_R
+keycode 102 = space
+add control = Control_L
+add control = Control_R
+add lock = Caps_Lock
+add mod1 = Alt_L
+add mod4 = Super_L
+add mod3 = Hyper_L

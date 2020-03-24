@@ -1,8 +1,14 @@
+#!/usr/bin/env python
 from i3pystatus import Status
 import socket
 
+
+
 HOSTNAME=socket.gethostname()
 status = Status()
+
+def isLaptop():
+    return HOSTNAME in ['saya', 'pignegna']
 
 # Displays clock like this:
 # Tue 30 Jul 11:59:46 PM KW31
@@ -23,7 +29,7 @@ def run(command):
 
 # This would look like this:
 # Discharging 6h:51m
-if HOSTNAME == 'pignegna':
+if isLaptop():
     status.register("battery",
                     format="{status} {remaining:%E%hh:%Mm}",
                     alert=True,
@@ -31,13 +37,13 @@ if HOSTNAME == 'pignegna':
                     charging_color=MIDGREEN,
                     alert_percentage=10,
                     status={
-                        "DIS":  "🔋",
-                        "CHR":  "🔌🔋",
-                        "FULL": "🔌",
+                        "DIS":  "",
+                        "CHR":  "",
+                        "FULL": "",
                     },)
 
 # Note: requires both netifaces and basiciw (for essid and quality)
-if HOSTNAME=='pignegna':
+if isLaptop():
     status.register("network",
                     color_up=MIDGREEN,
                     interface="wlp3s0",
@@ -66,11 +72,11 @@ status.register("temp",
 status.register("mem_bar",
                 color=MIDGREEN)
 
-if HOSTNAME == 'pignegna':
-    status.register("disk",
-                    path="/mnt/Mufu",
-                    on_leftclick=run("dolphin /"),
-                    format=u"\uf0a0 {avail}G")
+if isLaptop():
+    # status.register("disk",
+    #                 path="/mnt/Mufu",
+    #                 on_leftclick=run("dolphin /"),
+    #                 format=u"\uf0a0 {avail}G")
 
     status.register("disk",
                     path="/home",
@@ -94,13 +100,13 @@ status.register("pulseaudio",
 # Shows mpd status
 # Format:
 # Cloud connected▶Reroute to Remain
-status.register("mpd",
-                format="{title}{status}{album}",
-                status={
-                    "pause": "▷",
-                    "play": "▶",
-                    "stop": "◾",
-                },)
+# status.register("mpd",
+#                 format="{title}{status}{album}",
+#                 status={
+#                     "pause": "▷",
+#                     "play": "▶",
+#                     "stop": "◾",
+#                 },)
 
 status.run()
 

@@ -34,3 +34,12 @@
 	# 	autosetupmerge = true
 [push]
 	default = simple
+[github]
+	user = laynor
+	oauth-token = 9cd10045199b37a83db8f3ea0531422e844f6d16
+[magithub]
+	online = false
+[magithub "status"]
+	includeStatusHeader = false
+	includePullRequestsSection = false
+	includeIssuesSection = false

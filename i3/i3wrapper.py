@@ -5,7 +5,7 @@ import sys
 import configparser
 
 HOME          = os.getenv("HOME")
-I3_DIR        = os.path.join(HOME, '.i3')
+I3_DIR        = os.path.join(HOME, '.config', 'i3')
 TEMPLATE_DIR  = os.path.join(I3_DIR, 'config.d')
 CONF_INI      = os.path.join(I3_DIR, 'config.ini')
 CONFIG        = os.path.join(I3_DIR, 'config')

@@ -1,1 +1,23 @@
-for_window [class="Keepassx2" instance="keepassx2"] move scratchpad 
+for_window [class="Keepassx2" instance="keepassx2"] move scratchpad
+for_window [title="Skype Preview"] floating disable
+for_window [title="Skype Preview"] move scratchpad
+for_window [class="Skype"] floating disable
+
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
+
+## Avoid tiling popups, dropdown windows from plasma
+## for the first time, manually resize them, i3 will remember the setting for floating windows
+for_window [class="plasmashell"] floating enable;
+for_window [class="Plasma"] floating enable; border none
+for_window [title="plasma-desktop"] floating enable; border none
+for_window [title="win7"] floating enable; border none
+for_window [class="krunner"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="Klipper"] floating enable; border none
+for_window [class="Plasmoidviewer"] floating enable; border none
+no_focus [window_role="pop-up"]
+no_focus [window_type=notification]
+no_focus [class="plasmashell" window_type="notification"]
+for_window [class="plasmashell" window_type="notification"] no_focus
+## <!-- for_window [class="plasmashell" window_type="notification"] move position 10 10 -->
+mouse_warping none

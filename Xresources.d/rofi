@@ -89,7 +89,7 @@ rofi.separator-style:                solid
 ! "Fake transparency" Set from: Default
 ! rofi.fake-transparency:              false
 ! "DPI" Set from: Default
-! rofi.dpi:                            -1
+rofi.dpi:                            160
 ! "Threads to use for string matching" Set from: Default
 ! rofi.threads:                        0
 ! "Scrollbar width" Set from: Default

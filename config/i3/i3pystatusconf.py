@@ -51,8 +51,8 @@ if isLaptop():
 else:
     status.register("network",
                     color_up=MIDGREEN,
-                    interface='enp2s0',
-                    format_up='{kbs}')
+                    interface='wlp10s0f3u4',
+                    format_up=u"\uf1eb {essid} {quality:03.0f}%")
 
 # Displays whether a DHCP client is running
 status.register("runwatch",

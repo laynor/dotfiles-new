@@ -48,7 +48,7 @@ This function should only modify configuration layer settings."
      dap
      emacs-lisp
      factor
-     fsharp
+     ;; fsharp
      git
      github
      haskell
@@ -56,7 +56,7 @@ This function should only modify configuration layer settings."
      helpful
      html
      ibuffer
-     idris
+     ;; idris
      (javascript :variables
                  javascript-backend 'tern)
      lsp
@@ -66,13 +66,14 @@ This function should only modify configuration layer settings."
              ;; python-backend 'anaconda
              python-backend 'lsp
              )
-     racket
+     ;; racket
      react
      shell-scripts
      sql
      syntax-checking
+     tern
      (version-control :variables version-control-diff-tool 'diff-hl)
-     windows-scripts
+     ;; windows-scripts
      yaml
      )
 
@@ -571,8 +572,6 @@ before packages are loaded."
   (fcitx-aggressive-setup)
   (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
   (setq fcitx-use-dbus t) ; uncomment if you're using Linux
-  ;; prolog
-  (load-file "~/.ciaoroot/master/ciao_emacs/elisp/ciao-site-file.el")
 
   (use-package beacon
     :init (beacon-mode 1))
@@ -657,7 +656,7 @@ before packages are loaded."
   (require 'my-elisp-conf)
   (require 'my-apl-conf)
   (require 'my-factor-conf)
-  (require 'my-carp-conf)
+  ;; (require 'my-carp-conf)
   (require 'my-common-lisp-conf)
   (require 'my-js-conf)
   ;; (require 'my-XML-conf)

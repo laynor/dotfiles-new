@@ -47,3 +47,5 @@ if __name__ == '__main__':
         os.system('i3-msg reload')
     elif sys.argv[1] == 'restart':
         os.system('i3-msg restart')
+    else: 
+        print('config created')

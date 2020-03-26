@@ -1,1 +1,2 @@
+#include ".Xresources.d/dpi"
 #include ".Xresources.d/rofi"

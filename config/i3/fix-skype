@@ -1,0 +1,7 @@
+#!/usr/bin/sh
+while true; do
+   echo 'starting'
+   python ~/.config/i3/fix-skype.py
+   echo 'waiting'
+   sleep 2
+done

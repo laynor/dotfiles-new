@@ -1,0 +1,3 @@
+[submodule "config/polybar/polypomo"]
+	path = config/polybar/polypomo
+	url = https://github.com/unode/polypomo.git

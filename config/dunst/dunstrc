@@ -267,6 +267,18 @@
 #    background = "#A8EB41"
 #    foreground = "#FFFFFF"
 #
+[slack_mention]
+appname = Slack
+body = *@ale*
+urgency = critical
+
+
+[gcalcli]
+appname = gcalcli
+background = "#aaaaaa"
+foreground = "#000000"
+format = "<span font="Monospace 20">PocketChangeEvent\n%s</span>\n<span size="20">%b</span>"
+
 [irc]
         appname = weechat
         timeout = 0

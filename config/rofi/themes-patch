@@ -1,0 +1,28 @@
+diff --git a/User Themes/sidetab.rasi b/User Themes/sidetab.rasi
+index 693dbc4..29bb2f1 100644
+--- a/User Themes/sidetab.rasi	
++++ b/User Themes/sidetab.rasi	
+@@ -56,7 +56,7 @@ mainbox {
+ 	children: [ entry,listview,mode-switcher ];
+ }
+ 
+-button { padding: 5px 2px; }
++button { padding: 6px 2px; }
+ 
+ button selected {
+ 	background-color: @active-background;
+@@ -69,12 +69,12 @@ inputbar {
+ }
+ 
+ listview {
+-	spacing: 0.5em;
++	spacing: 0.0em;
+ 	dynamic: false;
+ 	cycle:   true;
+ }
+ 
+-element { padding: 10px; }
++element { padding: 5px; }
+ 
+ entry {
+ 	expand:         false;

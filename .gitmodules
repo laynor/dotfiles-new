@@ -1,3 +1,6 @@
 [submodule "config/polybar/polypomo"]
 	path = config/polybar/polypomo
 	url = https://github.com/unode/polypomo.git
+[submodule "config/rofi/rofi-themes"]
+	path = config/rofi/rofi-themes
+	url = https://github.com/davatorium/rofi-themes.git

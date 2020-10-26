@@ -16,11 +16,10 @@ exec xrdb ~/.Xresources
 exec --no-startup-id compton
 exec --no-startup-id fcitx
 exec --no-startup-id dunst
-exec_always --no-startup-id pulseaudio
+exec_always --no-startup-id start-pulseaudio-x11
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id pasystray
 exec kitty
-focus_follows_mouse no
 show_marks yes
 {{> keyboard}}
 #######################################################################

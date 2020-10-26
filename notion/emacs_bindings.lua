@@ -126,7 +126,7 @@ Emacs.WTiling = {
     }),
 }
 
-defbindings("WTiling", Emacs.WTiling)
+-- defbindings("WTiling", Emacs.WTiling)
 
 --
 -- WMPlex

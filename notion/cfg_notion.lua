@@ -39,7 +39,8 @@ function lock_screen(region)
 end
 
 defbindings("WFrame.toplevel", {
-   kpress(META.."O", "WFrame.switch_next(_)"),
+   --kpress(META.."O", nil),
+   --kpress(META.."O", "WFrame.switch_next(_)"),
    kpress(META.."U", "WFrame.switch_prev(_)"),
    kpress(META.."R", "mod_query.query_exec(_)"),
    kpress(META.."P", "ioncore.goto_activity()"),
@@ -53,7 +54,6 @@ defbindings("WFrame", {
 defbindings("WMPlex.toplevel", {
    bdoc("Query for a client window to go to."),
    kpress(META.."J", "mod_query.query_fuzzy_gotoclient(_)"),
-   kpress(ALTMETA.."F2", nil),
    kpress(META.."Z", "move_to_other_screen(_, _sub)")
 })
 -- defbindings("WScreen", {

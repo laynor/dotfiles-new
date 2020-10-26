@@ -2,9 +2,10 @@
 # is used in the bar {} block below.
 font pango:{{font}}
 
+title_align center
 workspace_layout tabbed # tabbed | tiling | stacking
 exec sh ~/.fehbg
-client.focused #586e75 #586e75 #fdf6e3 #268bd2
-client.focused_inactive #073642 #073642 #93a1a1 #002b36
-client.unfocused #002b36 #002b36 #586e75 #002b36
+client.focused #586e75 {{accent}} #fdf6e3 #268bd2
+client.focused_inactive #2a2645 #2a2645 {{foreground}} #2a2645
+client.unfocused #0F1524 {{background_alt}} {{foreground}} #0F1524
 client.urgent #dc322f #dc322f #fdf6e3 #dc322f

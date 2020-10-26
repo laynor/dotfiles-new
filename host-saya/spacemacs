@@ -34,7 +34,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(rust
      (auto-completion
-      (haskell :variables haskell-completion-backend 'intero))
+      (haskell :variables haskell-completion-backend 'intero)
+      :variables auto-completion-use-company-box t)
      better-defaults
      clojure
      cmake
@@ -49,6 +50,7 @@ This function should only modify configuration layer settings."
      (extempore :variables extempore-path "/opt/extempore-git/")
      emacs-lisp
      factor
+     dotnet
      fsharp
      git
      github
@@ -81,6 +83,7 @@ This function should only modify configuration layer settings."
      (version-control :variables version-control-diff-tool 'diff-hl)
      windows-scripts
      yaml
+     (unicode-fonts  :variables unicode-fonts-enable-ligatures t unicode-fonts-ligature-modes '(prog-mode))
      )
 
    ;; List of additional packages that will be installed without being
@@ -131,6 +134,12 @@ This function should only modify configuration layer settings."
    ;; (default is `used-only')
    dotspacemacs-install-packages 'used-only))
 
+;; (defun additional-color (name)
+;;   (pcase name
+;;     ("ale-green" "#0000aa")
+;;     ("ale-pink")
+;;     (t name)))
+
 (defun dotspacemacs/init ()
   "Initialization:
 This function is called at the very beginning of Spacemacs startup,
@@ -154,9 +163,9 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=~/.emacs.d/.cache/dumps/spacemacs.pdmp
-   ;; (default spacemacs.pdmp)
-   dotspacemacs-emacs-dumper-dump-file "spacemacs.pdmp"
+   ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
+   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
+   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
 
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
@@ -175,6 +184,13 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues due to garbage collection operations.
    ;; (default '(100000000 0.1))
    dotspacemacs-gc-cons '(100000000 0.1)
+
+   ;; Set `read-process-output-max' when startup finishes.
+   ;; This defines how much data is read from a foreign process.
+   ;; Setting this >= 1 MB should increase performance for lsp servers
+   ;; in emacs 27.
+   ;; (default (* 1024 1024))
+   dotspacemacs-read-process-output-max (* 1024 1024)
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
@@ -263,10 +279,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   ;; dotspacemacs-mode-line-theme '(spacemacs :separator slant :separator-scale 1.5)
-   ;; dotspacemacs-mode-line-theme '(doom)
-   dotspacemacs-mode-line-theme '(doom)
-
+   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.1)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
@@ -274,7 +287,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Iosevka SS09"
-                               :size 10.0
+                               :size 12.0
                                :weight normal
                                :width normal)
 
@@ -505,6 +518,13 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
 
+   ;; If non-nil shift your number row to match the entered keyboard layout
+   ;; (only in insert state). Currently supported keyboard layouts are:
+   ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
+   ;; New layouts can be added in `spacemacs-editing' layer.
+   ;; (default nil)
+   dotspacemacs-swap-number-row nil
+
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
    dotspacemacs-zone-out-when-idle nil
@@ -513,8 +533,10 @@ It should only modify the values of Spacemacs settings."
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
    dotspacemacs-pretty-docs nil
-   ))
 
+   ;; If nil the home buffer shows the full path of agenda items
+   ;; and todos. If non nil only the file name is shown.
+   dotspacemacs-home-shorten-agenda-source nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -540,11 +562,28 @@ It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (defun turn-on-hl-todo-mode ()
     (when (eq major-mode 'latex-mode)
-      (run-at-time 0.5 nil (lambda ()(hl-todo-mode 1)))))
+      (run-at-time 0.5 nil (lambda () (hl-todo-mode 1)))))
 
   (setenv "PATH" (concat "/home/ale/.local/bin:" (getenv "PATH")))
 
 
+  (setq spacemacs-evil-cursors
+        '(("normal" "pink" box)
+          ("insert" "chartreuse3" (bar . 2))
+          ("emacs" "SkyBlue2" box)
+          ("hybrid" "SkyBlue2" (bar . 2))
+          ("replace" "chocolate" (hbar . 2))
+          ("evilified" "LightGoldenrod3" box)
+          ("visual" "gray" (hbar . 2))
+          ("motion" "plum3" box)
+          ("lisp" "HotPink1" box)
+          ("iedit" "firebrick1" box)
+          ("iedit-insert" "firebrick1" (bar . 2)))
+        )
+
+  (setq-default fringes-outside-margins t)
+  (setq-default left-margin-width 1)
+  (setq history-delete-duplicates t)
 
   (setq auto-completion-return-key-behavior 'complete)
   (setq auto-completion-tab-key-behavior 'complete)
@@ -558,6 +597,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq custom-file "~/.emacs.d/private/mycustomfile.el")
   (load custom-file)
 
+  (set-fontset-font "fontset-default" 'symbol (font-spec :size 12 :name "Symbols Nerd Font Bold"))
 
   ;; CIAO
   ; @begin(57057414)@ - Do not edit these lines - added automatically!
@@ -581,6 +621,7 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   ;; (evil-global-set-key 'normal (kbd "M-.") 'evil-goto-definition)
+  (set-fontset-font "fontset-default" 'symbol (font-spec :size 12 :name "Symbols Nerd Font Bold"))
 
   ;; Japanese
   (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
@@ -589,7 +630,6 @@ before packages are loaded."
   (setq fcitx-use-dbus t) ; uncomment if you're using Linux
 
   (setq-default fill-column 120)
-  (global-undo-tree-mode)
 
   ;; MOUSE
   (global-set-key (kbd "C-<mouse-4>") 'spacemacs/zoom-frm-in)

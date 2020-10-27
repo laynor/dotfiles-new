@@ -33,8 +33,8 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(rust
+     (haskell :variables haskell-completion-backend 'intero)
      (auto-completion
-      (haskell :variables haskell-completion-backend 'intero)
       :variables auto-completion-use-company-box t)
      better-defaults
      clojure
@@ -560,6 +560,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (setq history-delete-duplicates t)
   (defun turn-on-hl-todo-mode ()
     (when (eq major-mode 'latex-mode)
       (run-at-time 0.5 nil (lambda () (hl-todo-mode 1)))))

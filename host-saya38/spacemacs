@@ -32,17 +32,19 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(go
+   '((dart :variables lsp-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/")
+     ;; dart
+     go
      elixir
      (auto-completion
-      (haskell :variables haskell-completion-backend 'intero))
+      :variables auto-completion-use-company-box t)
+     (haskell :variables haskell-completion-backend 'intero)
      better-defaults
      clojure
      cmake
      colors
      common-lisp
-     ;; (c-c++ :variables
-     ;;        c-c++-backend 'lsp-cquery)
+     (rust :variables rust-format-on-save nil)
      c-c++
      csv
      dap
@@ -55,11 +57,12 @@ This function should only modify configuration layer settings."
      helm
      helpful
      html
+     org
+     markdown
      ibuffer
      ;; idris
-     (javascript :variables
-                 javascript-backend 'tern)
-     lsp
+     javascript
+     (lsp :variables lsp-rust-server 'rust-analyzer)
      ;; prolog
      (python :variables
              python-test-runner '(nose pytest)
@@ -69,12 +72,15 @@ This function should only modify configuration layer settings."
      ;; racket
      react
      shell-scripts
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      sql
      syntax-checking
-     tern
      (version-control :variables version-control-diff-tool 'diff-hl)
      ;; windows-scripts
      yaml
+     (unicode-fonts  :variables unicode-fonts-enable-ligatures t unicode-fonts-ligature-modes '(prog-mode))
      )
 
    ;; List of additional packages that will be installed without being
@@ -89,6 +95,7 @@ This function should only modify configuration layer settings."
                                       ;;; qt
                                       ;; qml-mode
                                       fcitx
+                                      ;; (lsp-dart :location (recipe :fetcher git :url "https://github.com/emacs-lsp/lsp-dart.git"))
 
                                       ;; company-qml
                                       dyalog-mode
@@ -97,7 +104,7 @@ This function should only modify configuration layer settings."
                                       ;; synosaurus
                                       ;; realgud
                                       ;; Langs
-                                      gnu-apl-mode
+                                      ;; gnu-apl-mode
 
                                       ;;; python
                                       ;; flycheck-cython
@@ -148,8 +155,8 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=~/.emacs.d/.cache/dumps/spacemacs.pdmp
-   ;; (default spacemacs.pdmp)
+   ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
+   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
    dotspacemacs-emacs-dumper-dump-file "spacemacs.pdmp"
 
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
@@ -170,9 +177,18 @@ It should only modify the values of Spacemacs settings."
    ;; (default '(100000000 0.1))
    dotspacemacs-gc-cons '(100000000 0.1)
 
+   ;; Set `read-process-output-max' when startup finishes.
+   ;; This defines how much data is read from a foreign process.
+   ;; Setting this >= 1 MB should increase performance for lsp servers
+   ;; in emacs 27.
+   ;; (default (* 1024 1024))
+   dotspacemacs-read-process-output-max (* 1024 1024)
+
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
-   ;; latest version of packages from MELPA. (default nil)
+   ;; latest version of packages from MELPA. Spacelpa is currently in
+   ;; experimental state please use only for testing purposes.
+   ;; (default nil)
    dotspacemacs-use-spacelpa nil
 
    ;; If non-nil then verify the signature for downloaded Spacelpa archives.
@@ -217,7 +233,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; dotspacemacs-startup-banner "~/.emacs.d/private/spurdokek2.png"
    ;; dotspacemacs-startup-banner "~/.emacs.d/private/sburdholder.png"
-   dotspacemacs-startup-banner "~/.emacs.d/private/spurdo2x.png"
+   dotspacemacs-startup-banner "~/.emacs.d/private/goronat3.png"
 
    ;; dotspacemacs-startup-banner "~/.emacs.d/private/malvelli.png"
 
@@ -227,7 +243,7 @@ It should only modify the values of Spacemacs settings."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 4)
+   dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
 
    ;; True if the home buffer should respond to resize events. (default t)
@@ -257,16 +273,12 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   ;; dotspacemacs-mode-line-theme '(spacemacs :separator slant :separator-scale 1.5)
-   ;; dotspacemacs-mode-line-theme '(doom)
-   dotspacemacs-mode-line-theme '(doom)
-
+   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.1)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
-   ;; quickly tweak the mode-line size to make separators look not too crappy.
+   ;; Default font or prioritized list of fonts.
    dotspacemacs-default-font '("Iosevka SS09"
                                :size 10.0
                                :weight normal
@@ -291,8 +303,10 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-major-mode-leader-key ","
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
-   ;; (default "C-M-m")
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+   ;; (default "C-M-m" for terminal mode, "<M-return>" for GUI mode).
+   ;; Thus M-RET should work as leader key in both GUI and terminal modes.
+   ;; C-M-m also should work in terminal mode, but not in GUI mode.
+   dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
 
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
@@ -424,7 +438,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
@@ -477,7 +491,7 @@ It should only modify the values of Spacemacs settings."
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I: [%t] %b"
+   dotspacemacs-frame-title-format "%I: [%t] %b %m %f"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -488,7 +502,21 @@ It should only modify the values of Spacemacs settings."
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup 'trailing
+   dotspacemacs-whitespace-cleanup 'changed
+
+   ;; If non nil activate `clean-aindent-mode' which tries to correct
+   ;; virtual indentation of simple modes. This can interfer with mode specific
+   ;; indent handling like has been reported for `go-mode'.
+   ;; If it does deactivate it here.
+   ;; (default t)
+   dotspacemacs-use-clean-aindent-mode t
+
+   ;; If non-nil shift your number row to match the entered keyboard layout
+   ;; (only in insert state). Currently supported keyboard layouts are:
+   ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
+   ;; New layouts can be added in `spacemacs-editing' layer.
+   ;; (default nil)
+   dotspacemacs-swap-number-row nil
 
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
@@ -498,8 +526,10 @@ It should only modify the values of Spacemacs settings."
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
    dotspacemacs-pretty-docs nil
-   ))
 
+   ;; If nil the home buffer shows the full path of agenda items
+   ;; and todos. If non nil only the file name is shown.
+   dotspacemacs-home-shorten-agenda-source nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -523,13 +553,31 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (setq history-delete-duplicates t)
   (defun turn-on-hl-todo-mode ()
     (when (eq major-mode 'latex-mode)
-      (run-at-time 0.5 nil (lambda ()(hl-todo-mode 1)))))
+      (run-at-time 0.5 nil (lambda () (hl-todo-mode 1)))))
 
   (setenv "PATH" (concat "/home/ale/.local/bin:" (getenv "PATH")))
 
 
+  (setq spacemacs-evil-cursors
+        '(("normal" "pink" box)
+          ("insert" "chartreuse3" (bar . 2))
+          ("emacs" "SkyBlue2" box)
+          ("hybrid" "SkyBlue2" (bar . 2))
+          ("replace" "chocolate" (hbar . 2))
+          ("evilified" "LightGoldenrod3" box)
+          ("visual" "gray" (hbar . 2))
+          ("motion" "plum3" box)
+          ("lisp" "HotPink1" box)
+          ("iedit" "firebrick1" box)
+          ("iedit-insert" "firebrick1" (bar . 2)))
+        )
+
+  (setq-default fringes-outside-margins t)
+  (setq-default left-margin-width 1)
+  (setq history-delete-duplicates t)
 
   (setq auto-completion-return-key-behavior 'complete)
   (setq auto-completion-tab-key-behavior 'complete)
@@ -538,18 +586,16 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (blink-cursor-mode +1)
   ;; (setq dotspacemacs-auto-resume-layouts t)
   ;; Spurdo
-  (defconst spacemacs-buffer-logo-title "[ S P U R D O M A C S ]")
+  (defconst spacemacs-buffer-logo-title "[:D:D:DD G O R O N A M A C S :DD:D:D]")
   (add-to-list 'load-path (concat user-emacs-directory "private/site-lisp/"))
   (setq custom-file "~/.emacs.d/private/mycustomfile.el")
   (load custom-file)
-
 
   ;; CIAO
   ; @begin(57057414)@ - Do not edit these lines - added automatically!
   (if (file-exists-p "/home/ale/.ciaoroot/master/ciao_emacs/elisp/ciao-site-file.el")
       (load-file "/home/ale/.ciaoroot/master/ciao_emacs/elisp/ciao-site-file.el"))
   ; @end(57057414)@ - End of automatically added lines.
-
   )
 
 (defun dotspacemacs/user-load ()
@@ -567,15 +613,27 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   ;; (evil-global-set-key 'normal (kbd "M-.") 'evil-goto-definition)
 
+  ;; Fix powerline height
+  (set-fontset-font "fontset-default" 'symbol (font-spec :size 10 :name "Symbols Nerd Font Bold"))
+  (advice-add 'display-buffer-in-side-window :before
+              (lambda (&rest args)
+                (when (fboundp 'lsp-ui-doc-hide)
+                  (lsp-ui-doc-hide))))
+
+  (defun lsp-origami ())
+  (require 'lsp-origami)
+  (setq history-delete-duplicates t)
+
   ;; Japanese
   (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
   (fcitx-aggressive-setup)
-  (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
   (setq fcitx-use-dbus t) ; uncomment if you're using Linux
+  (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
 
-  (use-package beacon
-    :init (beacon-mode 1))
+  ;; (use-package beacon
+  ;;   :init (beacon-mode 1))
 
+  (setq-default fill-column 120)
   (global-undo-tree-mode)
 
   ;; MOUSE
@@ -653,12 +711,14 @@ before packages are loaded."
   (evil-set-initial-state 'diff-mode 'evilified)
   (evil-set-initial-state 'quickrun--mode 'evilified)
 
+  (require 'my-rust-conf)
   (require 'my-elisp-conf)
-  (require 'my-apl-conf)
+  ;; (require 'my-apl-conf)
   (require 'my-factor-conf)
   ;; (require 'my-carp-conf)
   (require 'my-common-lisp-conf)
   (require 'my-js-conf)
+  (require 'my-pocketchange-conf)
   ;; (require 'my-XML-conf)
   ;; (require 'my-python-conf)
   ;; (require 'my-C-conf)

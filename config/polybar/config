@@ -36,6 +36,7 @@ height = 27
 ;offset-y = 1%
 radius = 0.0
 fixed-center = false
+dpi = 150
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -59,7 +60,7 @@ font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-3 = siji:pixelsize=10;1
 font-4 = Noto Sans Symbols:style=Regular:pixelsize=10
 
-modules-left = screen i3
+modules-left = xbacklight i3
 modules-center = polypomo
 modules-right = filesystem pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu 
 
@@ -198,23 +199,23 @@ label-urgent-padding = 2
 label-song-maxlen = 25
 label-song-ellipsis = true
 
-; [module/xbacklight]
-; output = LVDS-1
-; type = internal/xbacklight
+[module/xbacklight]
+output = HDMI-0
+type = internal/xbacklight
 
-; format = <label> <bar>
-; label = BL
+format = <label> <bar>
+label = BL
 
-; bar-width = 10
-; bar-indicator = |
-; bar-indicator-foreground = #fff
-; bar-indicator-font = 2
-; bar-fill = ─
-; bar-fill-font = 2
-; bar-fill-foreground = #9f78e1
-; bar-empty = ─
-; bar-empty-font = 2
-; bar-empty-foreground = ${colors.foreground-alt}
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #fff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
 
 ; [module/backlight-acpi]
 ; inherit = module/xbacklight

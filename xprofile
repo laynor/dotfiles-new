@@ -2,4 +2,11 @@ export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 export QT_IM_MODULE=fcitx
 export QT_QPA_PLATFORMTHEME="qt5ct"
-~/.config/i3/fix-skype &
+export LC_CTYPE=ja_JP.UTF-8
+# ~/.config/i3/fix-skype &
+export STUDIO_JDK=/usr/lib/jvm/default
+fcitx &
+pulseaudio &
+pasystray &
+dunst &
+echo $(date) > /tmp/cane

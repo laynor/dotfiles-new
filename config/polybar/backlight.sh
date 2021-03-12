@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 BRI=/sys/class/backlight/intel_backlight/brightness
 MAXBRI=/sys/class/backlight/intel_backlight/max_brightness
 function display_bri () {

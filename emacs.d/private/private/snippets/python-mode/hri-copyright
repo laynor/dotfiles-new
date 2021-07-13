@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: hri-copyright
+# key: hric
+# --
+
+# -*- coding: utf-8 -*-
+#
+#  $1
+#
+#  Copyright (C)
+#  Honda Research Institute Europe GmbH
+#  Carl-Legien-Str. 30
+#  63073 Offenbach/Main
+#  Germany
+#
+#  UNPUBLISHED PROPRIETARY MATERIAL.
+#  ALL RIGHTS RESERVED.
+#
+# $2

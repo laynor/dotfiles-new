@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: demonstrate it (ignored test case)
+# key: idit
+# --
+
+#[ignore]
+it "$1" {}$0

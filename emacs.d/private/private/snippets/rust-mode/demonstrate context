@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: demonstrate context
+# key: dctx
+# --
+
+context "$1" {
+  $0
+}

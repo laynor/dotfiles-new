@@ -1,0 +1,34 @@
+# -*- mode: snippet -*-
+# name: paybox activity
+# key: pbact
+# --
+
+use crate::app::activity::Activity;
+
+pub struct $1 {}
+
+impl $1 {
+    pub fn new() -> Self {
+        Self {}
+    }
+}
+
+impl Activity for $1 {
+    fn tag(&self) -> &'static str {
+        "$1"
+    }
+
+    fn initialize(&mut self, context: &mut crate::app::AppContext) {$0}
+
+    fn finalize(&mut self) {}
+
+    fn handle_event(&mut self, e: crate::app::events::Event, context: &mut crate::app::AppContext) {
+        match e {
+            _ => log::debug!("Dropping event {:?}", e),
+        }
+    }
+
+    fn route(&self) -> String {
+        "/$2".to_string()
+    }
+}

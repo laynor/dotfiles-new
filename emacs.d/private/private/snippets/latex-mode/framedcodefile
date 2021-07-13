@@ -1,0 +1,10 @@
+# key: framedcodefile
+# name: framedcodefile
+# --
+\begin{listing}[H]
+  \begin{mdframed}
+    \inputminted[fontsize=\footnotesize, breaklines=true]{xml}{$1}
+  \end{mdframed}
+  \label{lst:$2}
+  \caption{$3}
+\end{listing}

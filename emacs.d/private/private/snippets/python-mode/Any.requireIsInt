@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Any.requireIsInt
+# key: reqint
+# --
+Any.requireIsInt( ${1:obj} )

@@ -1,0 +1,4 @@
+# key: dit
+# name: demonstrate it (test case)
+# --
+it "$1" {$0}

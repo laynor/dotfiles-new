@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: freezed-data-class
+# key: fzc
+# --
+
+@freezed
+abstract class $1 with _\$$1 {
+  const $1._();
+  factory $1({$0}) = _$1;
+  factory $1.fromJson(Map<String, dynamic> json) => _\$$1FromJson(json);
+}

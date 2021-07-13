@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Any.requireIsTextNonEmpty
+# key: reqt
+# --
+Any.requireIsTextNonEmpty( ${1:text} )

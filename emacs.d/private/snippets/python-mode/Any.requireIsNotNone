@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Any.requireIsNotNone
+# key: reqnn
+# --
+Any.requireIsNotNone( ${1:obj} )

@@ -1,0 +1,1 @@
+(melpa-upstream-visit :fetcher file :path "~/.emacs.d/private/local/melpa-upstream-visit/melpa-upstream-visit.el")

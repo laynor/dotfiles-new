@@ -1,0 +1,5 @@
+(defun fix-parens ()
+  (interactive)
+  (replace-string "( )" "()" nil 1 (buffer-end 1))
+  (replace-string "[ ]" "[]" nil 1 (buffer-end 1))
+  (replace-string "{ }" "{}" nil 1 (buffer-end 1)))

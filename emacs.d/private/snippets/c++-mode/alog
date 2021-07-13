@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: alog
+# key: alog
+# --
+
+ANY_LOG( 0, "$1", ANY_LOG_INFO, $2 );

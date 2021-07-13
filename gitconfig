@@ -7,7 +7,7 @@
 	preloadIndex = true
 	autocrlf = input
 	excludesfile = /home/ale/.gitignore_global
-  pager = delta
+    # pager = delta
         # excludesfile = /home/mattia/.gitignore_global
         # sparsecheckout = true
 [interactive]
@@ -31,7 +31,7 @@
 	ci = commit
 	co = checkout
 	unstage = reset HEAD
-	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    lg = log --graph --date=iso --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cs - %cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=iso
 	dw = "!f() { length=$(($#-1)); for last; do true; done; git diff ${@:3:$length} `find . -name $1` $last; }; f"
 [merge]
 	conflictstyle = diff3

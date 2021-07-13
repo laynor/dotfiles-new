@@ -32,11 +32,9 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '((dart :variables lsp-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/")
-     ;; dart
+   '(swift
      (auto-completion
       :variables auto-completion-use-company-box t)
-     (haskell :variables haskell-completion-backend 'intero)
      better-defaults
      clojure
      (kotlin :variables
@@ -49,6 +47,7 @@ This function should only modify configuration layer settings."
      c-c++
      csv
      dap
+     (dart :variables lsp-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/")
      emacs-lisp
      elixir
      factor
@@ -60,20 +59,30 @@ This function should only modify configuration layer settings."
      helm
      helpful
      html
-     ;; org
+     org
+     ;; (org :variables
+     ;;      org-enable-notifications t
+     ;;      org-start-notification-daemon-on-startup t
+     ;;      )
      markdown
      ibuffer
      ;; idris
      javascript
-     (lsp :variables lsp-rust-server 'rust-analyzer)
+     (lsp :variables
+          lsp-rust-server 'rust-analyzer
+          cargo-process-reload-on-modify t)
      ;; prolog
      phoenix
      (python :variables
              python-test-runner '(nose pytest)
              ;; python-backend 'anaconda
+             ;; python-lsp-server 'pyright
              python-backend 'lsp
              )
      ;; racket
+     (ranger :variables
+             ranger-override-dired 'ranger
+             ranger-show-preview t)
      react
      scala
      shell-scripts
@@ -85,7 +94,7 @@ This function should only modify configuration layer settings."
      (version-control :variables version-control-diff-tool 'diff-hl)
      ;; windows-scripts
      yaml
-     (unicode-fonts  :variables unicode-fonts-enable-ligatures t unicode-fonts-ligature-modes '(prog-mode))
+     (unicode-fonts :variables unicode-fonts-enable-ligatures t)
      )
 
    ;; List of additional packages that will be installed without being wrapped
@@ -99,7 +108,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(
                                       pomidor
                                       ;;; qt
-                                      ;; qml-mode
+                                      qml-mode
+                                      company-qml
                                       fcitx
                                       ;; (lsp-dart :location (recipe :fetcher git :url "https://github.com/emacs-lsp/lsp-dart.git"))
 
@@ -188,7 +198,7 @@ It should only modify the values of Spacemacs settings."
    ;; Setting this >= 1 MB should increase performance for lsp servers
    ;; in emacs 27.
    ;; (default (* 1024 1024))
-   dotspacemacs-read-process-output-max (* 5 1024 1024)
+   dotspacemacs-read-process-output-max (* 3 1024 1024)
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
@@ -259,6 +269,9 @@ It should only modify the values of Spacemacs settings."
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
 
+   ;; The minimum delay in seconds between number key presses. (default 0.4)
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
+
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
    ;; (default `text-mode')
@@ -296,7 +309,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font or prioritized list of fonts.
+   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; a non-negative integer (pixel size), or a floating-point (point size).
+   ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Iosevka Term SS09"
                                :size 11.0
                                :weight normal
@@ -434,6 +449,10 @@ It should only modify the values of Spacemacs settings."
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
 
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling t
+
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
    ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
@@ -458,9 +477,14 @@ It should only modify the values of Spacemacs settings."
    ;; (default 'evil)
    dotspacemacs-folding-method 'origami
 
-   ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
+   ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
+   ;; `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
+
+   ;; If non-nil smartparens-mode will be enabled in programming modes.
+   ;; (default t)
+   dotspacemacs-activate-smartparens-mode t
 
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
@@ -508,6 +532,9 @@ It should only modify the values of Spacemacs settings."
    ;; %n - Narrow if appropriate
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
+   ;; If nil then Spacemacs uses default `frame-title-format' to avoid
+   ;; performance issues, instead of calculating the frame title by
+   ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
    dotspacemacs-frame-title-format "%I: [%t] %b %m %f"
 
@@ -585,6 +612,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
       (run-at-time 0.5 nil (lambda () (hl-todo-mode 1)))))
 
   (setenv "PATH" (concat "/home/ale/.local/bin:" (getenv "PATH")))
+  (defun my-add-when-param (r)
+    (append (list (car r)
+                  (cadr r)
+                  (or (caddr r) "dummy-when-param"))
+            (cdddr r)))
+  (advice-add 'define-obsolete-function-alias :filter-args 'my-add-when-param)
+  (advice-add 'define-obsolete-variable-alias :filter-args 'my-add-when-param)
+  (advice-add 'make-obsolete :filter-args 'my-add-when-param)
 
   (setq spacemacs-evil-cursors
         '(("normal" "pink" box)
@@ -626,8 +661,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump."
-  )
+dump.")
+
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
@@ -735,6 +770,43 @@ before packages are loaded."
   (evil-set-initial-state 'diff-mode 'evilified)
   (evil-set-initial-state 'quickrun--mode 'evilified)
 
+  (use-package dart-mode
+    :config
+    (add-hook 'dart-mode-hook (lambda () (setq fill-column 120))))
+
+  (defun lsp-ui-doc--mv-at-point (width height start-x start-y)
+    "Return position of FRAME to be where the point is.
+WIDTH is the child frame width.
+HEIGHT is the child frame height.
+START-X is the position x of the current window.
+START-Y is the position y of the current window.
+The algorithm prefers to position FRAME just above the
+symbol at point, to not obstruct the view of the code that follows.
+If there's no space above in the current window, it places
+FRAME just below the symbol at point."
+    (-let* (((x . y) (--> (or lsp-ui-doc--bounds (bounds-of-thing-at-point 'symbol))
+                       (or (posn-x-y (posn-at-point (car it)))
+                           (if (< (car it) (window-start))
+                               (cons 0 0)
+                             (posn-x-y (posn-at-point (1- (window-end))))))))
+            (frame-relative-symbol-x (+ start-x x (* (frame-char-width) 2)))
+            (frame-relative-symbol-y (+ start-y y))
+            (char-height (frame-char-height))
+            ;; Make sure the frame is positioned horizontally such that
+            ;; it does not go beyond the frame boundaries.
+            (frame-x (or (and (<= (frame-outer-width) (+ frame-relative-symbol-x width))
+                              (- x (- (+ frame-relative-symbol-x width)
+                                      (frame-outer-width))))
+                         x))
+            (frame-y (+ (or (and (<= height frame-relative-symbol-y)
+                                 (- y height))
+                            (+ y char-height))
+                        (if (fboundp 'window-tab-line-height) (window-tab-line-height) 0)))
+            (foo (if (flycheck-overlay-errors-at (point))
+                     (+ 4 (- char-height))
+                   0)))
+      (cons (+ start-x frame-x) (+ start-y frame-y foo))))
+
   (setq elixir-ls-path "/usr/lib/elixir-ls")
   (require 'my-rust-conf)
   (require 'my-elisp-conf)
@@ -746,7 +818,7 @@ before packages are loaded."
   (require 'my-pocketchange-conf)
   (require 'my-scala-conf)
   ;; (require 'my-XML-conf)
-  ;; (require 'my-python-conf)
+  (require 'my-python-conf)
   ;; (require 'my-C-conf)
   ;; (require 'my-TeX-conf)
   ;; (require 'my-idris-conf)

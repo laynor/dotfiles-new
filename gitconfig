@@ -33,6 +33,8 @@
 	unstage = reset HEAD
     lg = log --graph --date=iso --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cs - %cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=iso
 	dw = "!f() { length=$(($#-1)); for last; do true; done; git diff ${@:3:$length} `find . -name $1` $last; }; f"
+    ls = "!cd -- ${GIT_PREFIX:-.};\nfor i in *; \ndo \n  ls -ld $i | awk 'BEGIN { ORS=\"\";} {print $1, $2, $3, $4; printf(\"%7s \",$5)}'; \n  gd=$(git log -1 --date=local --format=\"%ad\" -- \"$i\"); \n  [ -z \"$gd\" ] && gd=$(ls -ld \"$i\" | awk '{print $6, $7, $8}'); \n  if [ $(gdate -d \"$gd\" +%s) -le $(gdate -d \"6 months ago\" +%s) ] ; \n    then dfmt='%b %_d  %Y'; \n    else dfmt='%b %_d %H:%M'; \n  fi; \n  printf \"%s \" \"$(gdate -d \"$gd\" +\"$dfmt\")\"; \n  ls -d --color=always \"$i\"; \ndone"
+	faust = "!b=$(git symbolic-ref refs/remotes/origin/HEAD | sed \"s@^refs/remotes/origin/@@\"); git fetch origin $b:$b"
 [merge]
 	conflictstyle = diff3
 [receive]
@@ -55,3 +57,12 @@
 	includeIssuesSection = false
 [pull]
 	ff = only
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[diff]
+	algorithm = histogram

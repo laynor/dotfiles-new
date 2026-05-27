@@ -4,23 +4,27 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 #
 
+include /etc/sway/config.d/*
+
 {{> appearance}}
 
 {{> keys}}
 
 {{! > bar}}
+bar swaybar_command waybar
 
 {{> rules}}
 
+exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 exec xrdb ~/.Xresources
 exec --no-startup-id compton
-exec --no-startup-id fcitx
+exec --no-startup-id fcitx5
 exec --no-startup-id dunst
-exec_always --no-startup-id ~/.config/polybar/launch.sh
-exec --no-startup-id pasystray
-exec kitty
+# exec_always --no-startup-id ~/.config/polybar/launch.sh
+# exec --no-startup-id pasystray
+exec foot
 show_marks yes
-{{> keyboard}}
+# {{! > keyboard}}
 #######################################################################
 # automatically start i3-config-wizard to offer the user to create a
 # keysym-based config which used their favorite modifier (alt or windows)

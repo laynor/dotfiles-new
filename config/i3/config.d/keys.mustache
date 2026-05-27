@@ -1,4 +1,7 @@
 # -*- conf -*-
+
+input * xkb_options compose:menu
+
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
 set $up k
@@ -17,7 +20,8 @@ bindsym $mod+c kill
 # rofi bindings
 bindsym $mod+r exec rofi -show combi
 bindsym $mod+d exec rofi -show drun
-bindsym $mod+w exec rofi -show window
+# bindsym $mod+w exec rofi -show window
+bindsym $mod+w exec swayr switch-window >> /tmp/swayr.log 2>&1
 
 # change focus
 # bindsym $mod+$left focus left
@@ -66,11 +70,22 @@ bindsym $mod+o layout toggle split
 # toggle tiling / floating
 bindsym $mod+Shift+minus floating toggle
 
+# clear notifications
+bindsym $mod+m exec dunstctl close-all
+
+
 # Switch to window
-bindsym $mod+e [class="Emacs"] focus
-bindsym $mod+t [class="kitty"] focus
-bindsym $mod+f [class="Firefox"][instance="Navigator"] focus
-bindsym $mod+s [class="Slack"][instance="slack"] focus
+# bindsym $mod+e [app_id="emacs"] focus
+bindsym $mod+e [app_id="emacs"] focus
+bindsym $mod+t [app_id="foot" title=".*saya38.*"] focus
+# bindsym $mod+f [app_id="firefox"] focus
+bindsym $mod+f [app_id="glide"] focus
+bindsym $mod+s [app_id="slack"] focus
+bindsym $mod+question exec 'swayprop | xargs -0 notify-send swayprop'
+# bindsym $mod+e [class="Emacs"] focus
+# bindsym $mod+t [class="kitty"] focus
+# bindsym $mod+f [class="Firefox"][instance="Navigator"] focus
+# bindsym $mod+s [class="Slack"][instance="slack"] focus
 
 # change focus between tiling / floating windows
 bindsym $mod+minus focus mode_toggle
@@ -89,16 +104,16 @@ bindsym $mod+Shift+space move scratchpad
 bindsym $mod+space scratchpad show
 
 # switch to workspace
-bindsym $mod+1 $move workspace number 1 www
-bindsym $mod+2 $move workspace number 2 dev
-bindsym $mod+3 $move workspace number 3 other1
-bindsym $mod+4 $move workspace number 4 other2
-bindsym $mod+5 $move workspace number 5 other3
-bindsym $mod+6 $move workspace number 6 other4
-bindsym $mod+7 $move workspace number 7 other5
-bindsym $mod+8 $move workspace number 8 other6
-bindsym $mod+9 $move workspace number 9 other7
-bindsym $mod+0 $move workspace number 10 other8
+bindsym $mod+1 $move workspace number 1
+bindsym $mod+2 $move workspace number 2
+bindsym $mod+3 $move workspace number 3
+bindsym $mod+4 $move workspace number 4
+bindsym $mod+5 $move workspace number 5
+bindsym $mod+6 $move workspace number 6
+bindsym $mod+7 $move workspace number 7
+bindsym $mod+8 $move workspace number 8
+bindsym $mod+9 $move workspace number 9
+bindsym $mod+0 $move workspace number 10
 bindsym $mod+period $move workspace next
 bindsym $mod+comma $move workspace prev
 
@@ -106,7 +121,7 @@ bindsym $mod+comma $move workspace prev
 bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
 bindsym $mod+Shift+3 move container to workspace number 3
-bindsym $mod+Shift+4 move container to workspace nubmer 4
+bindsym $mod+Shift+4 move container to workspace number 4
 bindsym $mod+Shift+5 move container to workspace number 5
 bindsym $mod+Shift+6 move container to workspace number 6
 bindsym $mod+Shift+7 move container to workspace number 7
@@ -159,7 +174,7 @@ bindsym $mod+Shift+p $rebuildConf restart
 bindsym $mod+Shift+e exit
 bindsym $mod+Shift+m exec "xmodmap ~/.Xmodmap" # "DISPLAY=:1 xmodmap /home/ale/.Xmodmap"
 # lock screen
-bindsym $mod+semicolon exec "i3lock"
+bindsym $mod+semicolon exec "swaylock"
 
 bindsym button4 nop
 bindsym button5 nop

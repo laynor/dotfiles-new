@@ -12,9 +12,18 @@ for_window [class="krunner"] floating enable; border none
 for_window [class="Kmix"] floating enable; border none
 for_window [class="Klipper"] floating enable; border none
 for_window [class="Plasmoidviewer"] floating enable; border none
+for_window [title="payspot_client"] floating enable
+for_window [title="payspot_client"] resize set height 1308
+for_window [title="payspot_client"] resize set width 800
 no_focus [window_role="pop-up"]
 no_focus [window_type=notification]
 no_focus [class="plasmashell" window_type="notification"]
 for_window [class="plasmashell" window_type="notification"] no_focus
 ## <!-- for_window [class="plasmashell" window_type="notification"] move position 10 10 -->
+for_window [title="Spotify"] move window to workspace 3
 mouse_warping none
+
+workspace 1 output DP-1
+workspace 2 output HDMI-A-1
+output DP-1 pos 0 0 res 3840x2160 bg #000000 solid_color
+output HDMI-A-1 pos 3840 0 res 3840x2160 bg #000000 solid_color

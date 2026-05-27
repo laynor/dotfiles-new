@@ -63,8 +63,8 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         os.system('i3')
     elif sys.argv[1] == 'reload':
-        os.system('i3-msg reload')
+        os.system('swaymsg reload')
     elif sys.argv[1] == 'restart':
-        os.system('i3-msg restart')
-    else: 
+        os.system('swaymsg restart')
+    else:
         print('config created')
